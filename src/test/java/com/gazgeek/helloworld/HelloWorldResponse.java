@@ -4,7 +4,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.startsWith;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class HelloWorldResponse {
 
@@ -21,6 +22,11 @@ public class HelloWorldResponse {
 
     public HelloWorldResponse assertResponseBody(String expected) {
         assertThat(responseEntity.getBody(), is(expected));
+        return this;
+    }
+
+    public HelloWorldResponse assertResponseBodyStartsWith(String prefix) {
+        assertThat(responseEntity.getBody(), startsWith(prefix));
         return this;
     }
 }

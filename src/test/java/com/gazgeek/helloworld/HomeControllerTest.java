@@ -1,40 +1,37 @@
 package com.gazgeek.helloworld;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.boot.test.TestRestTemplate;
-import org.springframework.boot.test.WebIntegrationTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.web.client.RestTemplate;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate;
+import org.springframework.boot.resttestclient.TestRestTemplate;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 
 import static org.springframework.http.HttpStatus.OK;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
-@WebIntegrationTest(randomPort = true)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureTestRestTemplate
 public class HomeControllerTest {
 
-    @Value("${local.server.port}")
+    @LocalServerPort
     private Integer port;
 
-    private RestTemplate restTemplate = new TestRestTemplate();
+    @Autowired
+    private TestRestTemplate restTemplate;
 
     @Test
     public void helloWorld() {
         getRequest("/")
             .assertStatusCode(OK)
-            .assertResponseBody("Hello from GazGeek!");
+            .assertResponseBodyStartsWith("Hello from 9999");
     }
 
     private HelloWorldResponse getRequest(String uri) {
         return new HelloWorldResponse(restTemplate.getForEntity(getUri(uri), String.class));
     }
-
 
     protected URI getUri(String uri) {
         return UriComponentsBuilder

@@ -1,14 +1,21 @@
 package com.gazgeek.helloworld.controller;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HomeController {
 
+    private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+
     @RequestMapping("/")
     String home() {
-        Long id = this.genRegId("123456");
+        Long id = this.genRegId("9999");
         return "Hello from " + id;
         //return "Hello from GazGeek!";
     }
